@@ -5,6 +5,10 @@ BIOS Implant installs from the public marketplace
 in the path: the marketplace serves this tree directly. Node ≥ 20 must be on
 `PATH` — the local companion MCP runs under it.
 
+Handing this to an agent instead of doing it yourself: paste the block in
+[`docs/one-prompt-install.md`](../../docs/one-prompt-install.md) and it works out
+which harness it is in.
+
 ## Claude Code — verified
 
 ```text
