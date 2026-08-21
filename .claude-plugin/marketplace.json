@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
-  "name": "8hats",
-  "description": "8Hats public plugin marketplace — agent identity and continuity tooling. Each capability is a remote MCP server plus a local companion vendored in this repository, so hosts that are not Claude Code can consume the same thing by pointing at the endpoint directly.",
+  "name": "8hats-qa",
+  "description": "QA SCRATCH \u2014 not the real marketplace. A throwaway copy of 8hats/marketplace carrying PRs #1+#2+#3+#4 together, so Claude Desktop can be tested against them before they merge. Desktop's 'add marketplace' takes owner/repo with no ref, so a branch cannot be tested any other way. The name is 8hats-qa, not 8hats, so adding this cannot retarget the real registration. Delete after use.",
   "owner": {
     "name": "8Hats",
     "email": "tp@8hats.ai"
