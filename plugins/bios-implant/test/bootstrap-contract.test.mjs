@@ -84,7 +84,23 @@ test("package metadata advertises the Cowork installer rather than a generic pac
 
   assert.match(manifest.description, /Local Cowork/i);
   assert.match(manifest.description, /install/i);
-  assert.equal(manifest.bin["bios-install"], "bin/bios-install.mjs");
+});
+
+test("the marketplace plugin ships no top-level bin/ — claude.ai-hosted plugins reject it", async () => {
+  // Claude Desktop syncs claude.ai-hosted marketplace plugins through a validator that fails the
+  // whole marketplace (MARKETPLACE_ERROR:REMOTE_SYNC_FAILED / failed_content) when a plugin ships a
+  // top-level bin/ directory. Claude Code tolerates bin/, so the CLI synced while Desktop did not.
+  // This plugin's real entry points are declared through mcpServers/hooks/skills, so a bin/ here is
+  // npm-package cruft — keep it out of the marketplace tree, and out of the npm package's files[].
+  const manifest = JSON.parse(await readPackageFile("package.json"));
+
+  assert.equal(manifest.bin, undefined, "package.json must not declare a bin field");
+  assert.ok(!(manifest.files ?? []).includes("bin/"), "package.json files[] must not ship bin/");
+  await assert.rejects(
+    fsp.stat(path.join(packageRoot, "bin")),
+    /ENOENT/u,
+    "no top-level bin/ directory may exist in the plugin tree"
+  );
 });
 
 test("doctor skill requires runtime evidence and a human-readable health table", async () => {

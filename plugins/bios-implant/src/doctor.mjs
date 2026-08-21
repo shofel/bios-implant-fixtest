@@ -264,7 +264,8 @@ function validateClaudeManifest(manifest, filePath) {
     manifest?.version === PACKAGE_VERSION &&
     manifest?.skills === "./skills/" &&
     manifest?.hooks === "./hooks/claude.json" &&
-    manifest?.mcpServers === "./.mcp.claude.json";
+    typeof manifest?.mcpServers === "object" &&
+    manifest?.mcpServers !== null;
 
   return {
     code: "CLAUDE_MANIFEST_VALID",
@@ -357,7 +358,6 @@ async function inspectPackageInventory(packageRoot, deps) {
     ["ROOT_CLAUDE_MANIFEST_PRESENT", path.join(packageRoot, ".claude-plugin", "plugin.json")],
     ["ROOT_MARKETPLACE_PRESENT", path.join(packageRoot, ".claude-plugin", "marketplace.json")],
     ["ROOT_CODEX_MANIFEST_PRESENT", path.join(packageRoot, ".codex-plugin", "plugin.json")],
-    ["ROOT_CLAUDE_MCP_PRESENT", path.join(packageRoot, ".mcp.claude.json")],
     ["ROOT_CODEX_MCP_PRESENT", path.join(packageRoot, ".mcp.json")],
     ["LOCAL_MCP_DIST_PRESENT", path.join(packageRoot, "dist", "local-mcp.mjs")],
     ["SETUP_SKILL_PRESENT", path.join(packageRoot, "SETUP.md")],
@@ -375,7 +375,6 @@ async function inspectPackageInventory(packageRoot, deps) {
 
   const claudeManifestPath = path.join(packageRoot, ".claude-plugin", "plugin.json");
   const codexManifestPath = path.join(packageRoot, ".codex-plugin", "plugin.json");
-  const claudeMcpPath = path.join(packageRoot, ".mcp.claude.json");
   const codexMcpPath = path.join(packageRoot, ".mcp.json");
   const marketplacePath = path.join(packageRoot, "catalog", ".claude-plugin", "marketplace.json");
   const distributionMarketplacePath = path.join(packageRoot, ".claude-plugin", "marketplace.json");
@@ -383,13 +382,13 @@ async function inspectPackageInventory(packageRoot, deps) {
   const jsonTargets = [
     ["CLAUDE_MANIFEST_JSON_VALID", claudeManifestPath, (value) => [
       versionCheck("CLAUDE_MANIFEST_VERSION", value.version, claudeManifestPath),
-      validateClaudeManifest(value, claudeManifestPath)
+      validateClaudeManifest(value, claudeManifestPath),
+      validateClaudeMcp(value, claudeManifestPath)
     ]],
     ["CODEX_MANIFEST_JSON_VALID", codexManifestPath, (value) => [
       versionCheck("CODEX_MANIFEST_VERSION", value.version, codexManifestPath),
       validateCodexManifest(value, codexManifestPath)
     ]],
-    ["CLAUDE_MCP_JSON_VALID", claudeMcpPath, (value) => [validateClaudeMcp(value, claudeMcpPath)]],
     ["CODEX_MCP_JSON_VALID", codexMcpPath, (value) => [validateCodexMcp(value, codexMcpPath)]],
     ["ROOT_MARKETPLACE_JSON_VALID", distributionMarketplacePath, (value) => [
       validateDistributionMarketplace("ROOT_MARKETPLACE_CONTRACT_VALID", value, distributionMarketplacePath)

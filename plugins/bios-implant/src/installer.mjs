@@ -96,7 +96,6 @@ async function ensurePackageArtifacts(paths, deps) {
     path.join(paths.packageRoot, ".claude-plugin", "plugin.json"),
     path.join(paths.packageRoot, ".claude-plugin", "marketplace.json"),
     path.join(paths.packageRoot, ".codex-plugin", "plugin.json"),
-    path.join(paths.packageRoot, ".mcp.claude.json"),
     path.join(paths.packageRoot, ".mcp.json"),
     path.join(paths.packageRoot, "SETUP.md"),
     path.join(paths.packageRoot, LOCAL_MCP_LAUNCHER),

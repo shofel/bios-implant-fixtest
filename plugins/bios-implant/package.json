@@ -4,20 +4,13 @@
   "description": "One-command Agent University BIOS Implant installer for Claude Desktop Local Cowork, Claude Code, and Codex; installs MCPs, skills, hooks, and doctor checks.",
   "type": "module",
   "private": false,
-  "bin": {
-    "bios-implant": "bin/bios-implant.mjs",
-    "bios-install": "bin/bios-install.mjs",
-    "bios-doctor": "bin/bios-doctor.mjs"
-  },
   "engines": {
     "node": ">=20"
   },
   "files": [
     ".claude-plugin/",
     ".codex-plugin/",
-    ".mcp.claude.json",
     ".mcp.json",
-    "bin/",
     "catalog/",
     "dist/",
     "hooks/",

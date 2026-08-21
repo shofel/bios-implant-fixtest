@@ -60,20 +60,6 @@ async function createDoctorFixture({ withBinding = true } = {}) {
     version: PACKAGE_VERSION,
     skills: "./skills/",
     hooks: "./hooks/claude.json",
-    mcpServers: "./.mcp.claude.json"
-  });
-  await writeJson(path.join(packageRoot, ".claude-plugin", "marketplace.json"), {
-    name: "agent-university",
-    owner: { name: "Agent University" },
-    plugins: [{ name: "bios-implant", source: "./" }]
-  });
-  await writeJson(path.join(packageRoot, ".codex-plugin", "plugin.json"), {
-    name: "bios-implant",
-    version: PACKAGE_VERSION,
-    skills: "./skills/",
-    mcpServers: "./.mcp.json"
-  });
-  await writeJson(path.join(packageRoot, ".mcp.claude.json"), {
     mcpServers: {
       implant: {
         type: "http",
@@ -85,6 +71,17 @@ async function createDoctorFixture({ withBinding = true } = {}) {
         args: ["${CLAUDE_PLUGIN_ROOT}/dist/local-mcp.mjs"]
       }
     }
+  });
+  await writeJson(path.join(packageRoot, ".claude-plugin", "marketplace.json"), {
+    name: "agent-university",
+    owner: { name: "Agent University" },
+    plugins: [{ name: "bios-implant", source: "./" }]
+  });
+  await writeJson(path.join(packageRoot, ".codex-plugin", "plugin.json"), {
+    name: "bios-implant",
+    version: PACKAGE_VERSION,
+    skills: "./skills/",
+    mcpServers: "./.mcp.json"
   });
   await writeJson(path.join(packageRoot, ".mcp.json"), {
     mcpServers: {
@@ -562,7 +559,11 @@ test("doctor exposes raw paths only with --verbose", async () => {
 
 test("doctor rejects embedded Claude OAuth client settings", async () => {
   const { packageRoot, homeDirectory, stateRoot } = await createDoctorFixture();
-  await writeJson(path.join(packageRoot, ".mcp.claude.json"), {
+  await writeJson(path.join(packageRoot, ".claude-plugin", "plugin.json"), {
+    name: "bios-implant",
+    version: PACKAGE_VERSION,
+    skills: "./skills/",
+    hooks: "./hooks/claude.json",
     mcpServers: {
       implant: {
         type: "http",
